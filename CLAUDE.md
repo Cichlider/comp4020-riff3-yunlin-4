@@ -158,6 +158,36 @@ means building legibly is part of building well.
 You don't need a name, a student number, or any identity file in the repo: we
 know whose repo it is. Spend the effort on the work.
 
+## Lessons from building this prototype
+
+- **jsdom doesn't model focus loss on DOM-node removal the way a real
+  browser does.** A `render...()` function that does `el.innerHTML = ""`
+  and rebuilds its children on every click will drop keyboard focus onto
+  `<body>` in Chrome, but a jsdom-based interaction test that only checks
+  the resulting DOM state (aria-labels, text content, etc.) will stay green
+  through that regression, because jsdom's `document.activeElement`
+  behaviour around removed nodes isn't the same fidelity gap. Caught this
+  by driving the actual dev server with `agent-browser`'s `press Tab` /
+  `press Enter` and reading `document.activeElement` directly, not by
+  trusting the vitest suite. Any interactive widget that rebuilds its own
+  DOM on click needs this specific manual check, not just an automated
+  test — see `reflections/assignment-1.md` for the fuller story.
+- **`agent-browser`'s text-based selectors can silently click the wrong
+  element.** `find text "B" click` matched a `<strong>B</strong>` in a
+  paragraph, not a grid cell button with `B` as its visible letter, and
+  produced no error — just a screenshot that looked unchanged. `snapshot`
+  (the accessibility-tree dump with `[ref=eN]` ids) followed by `click
+  "ref=eN"` is the reliable way to target a specific interactive element
+  when several elements on the page share visible text; re-run `snapshot`
+  after any render that could have rebuilt the DOM; refs from a stale
+  snapshot won't resolve.
+- A categorical palette validated for all-pairs colorblind-safety may only
+  cover its first few slots (see the dataviz skill's `palette.md`). A
+  widget that genuinely needs more categories than that (five districts,
+  here) should keep color as a secondary/reinforcing channel and put the
+  real identity signal in text or a numeral on every mark, rather than
+  forcing the design down to the palette's guaranteed-safe count.
+
 ## This file is yours
 
 This CLAUDE.md is a starting point, not a fixed rulebook. As you learn what your
