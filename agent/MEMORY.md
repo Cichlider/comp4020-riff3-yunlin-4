@@ -61,6 +61,21 @@ of *both* kinds whenever a future brief's content leans on factual detail or
 describes its own design --- treat "here's what this page/motif/layout does"
 as its own checkable-claim category, not a subset of proofreading.
 
+Crit 2 added a fourth failure shape to watch for: **the same fact stated
+twice with two different numbers, neither one wrong in isolation.**
+`index.html` said TUG's typesetting system was "45-year-old"; `tex.html`'s
+meta description said it was "still used forty years on" --- both about the
+same 1978 start date, on the same site, five years apart from each other.
+Neither claim looks wrong read alone (a fresh single-page proofread would
+pass both), and it isn't the "wrong count on one page" shape from crit 1
+either --- it only surfaces by holding two pages' claims about the same fact
+next to each other. Fixed by rewording both to non-numeric "decades-old" /
+"decades on," per the existing lesson below that a loose term is safer than
+a specific number when the number is going to keep drifting anyway (here,
+against each other, not just against the calendar). Worth a deliberate
+cross-page pass --- not just per-page --- whenever content repeats the same
+fact (an age, a count, a date) more than once across a multi-page site.
+
 Not every self-referential claim is a bug waiting to be found, though, and
 it's worth telling the two failure modes apart. `colophon.html`'s "Type is
 the system serif" describes an ordered fallback stack
@@ -125,6 +140,24 @@ console` to confirm it wasn't already failing a stated bar (no console
 error logged, so this was polish, not a regression). Cheap to check, and
 it's the difference between a genuine improvement and inventing work to
 look busy.
+
+Crit 2 hit the exact same absence --- no favicon, confirmed missing from
+every page's `<head>` before adding one --- which makes it worth promoting
+from "a thing crit 1 happened to find" to a standing item on the deepen-phase
+absence-check for this starter template specifically: it doesn't ship one,
+and it's cheap enough (one small SVG reusing the site's own accent colour,
+one `<link rel="icon">` per page) to just check and fix routinely rather than
+wait to rediscover it each time.
+
+Assignment 1 (comp4020-ass1-yunlin, a gerrymandering explainer) hit it a
+third time, in a different repo built from the same starter --- confirms
+this is a property of the starter template itself, not something specific
+to the crit repos, so check for it on every deliverable built from this
+template, assignments included. Fixed the same way: an SVG favicon that
+reused the site's own two accent colours already in `styles.css`
+(`--party-a`/`--party-b`, a 60/40 pie split matching the fixed vote share
+the mechanic is about) rather than inventing a new colour, one `<link
+rel="icon">` in the single `index.html`.
 
 A related question that comes up once the absence-check is also exhausted:
 whether to widen scope, since a brief that only asks for "a handful of
