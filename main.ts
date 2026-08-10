@@ -38,9 +38,24 @@ function renderPalette(): void {
     button.addEventListener("click", () => {
       activeDistrict = d;
       renderPalette();
+      // Every cell's label names the district a click would move it into,
+      // so it goes stale the moment the active district changes.
+      renderGrid();
+      // Both renders rebuild their buttons from scratch, which drops
+      // keyboard focus onto <body> — restore it to the new equivalent
+      // button so a keyboard user isn't bounced to the top of the page.
+      focusPaletteButton(d);
     });
     palette.append(button);
   }
+}
+
+function focusPaletteButton(d: number): void {
+  palette?.querySelectorAll<HTMLButtonElement>(".swatch")[d]?.focus();
+}
+
+function focusGridCell(i: number): void {
+  grid?.querySelectorAll<HTMLButtonElement>(".cell")[i]?.focus();
 }
 
 function renderGrid(): void {
@@ -66,6 +81,7 @@ function renderGrid(): void {
         districts[i] = activeDistrict;
         renderGrid();
         renderTally();
+        focusGridCell(i);
       });
       grid.append(cell);
     }
