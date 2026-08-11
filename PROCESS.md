@@ -15,8 +15,8 @@ share fixed with your own hands and watch the seat count move anyway.
 ## The moments that mattered
 
 1. **Verifying the seat outcomes before writing them into the site.** Rather
-   than hand-computing which preset produces which split and trusting it,
-   the three district maps and the tally logic live in a pure, DOM-free
+   than trust a hand-computed split, the three district maps and the tally
+   logic live in a pure, DOM-free
    module (`electorate.ts`) with unit tests that lock in the exact numbers
    the copy claims (3-2, 5-0, 4-1) — the kind of checkable, self-referential
    claim worth verifying rather than asserting
@@ -27,11 +27,10 @@ share fixed with your own hands and watch the seat count move anyway.
    against jsdom and drives the actual click handlers
    ([`607cf38`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/607cf38)).
    Its aria-label assertion failed: selecting a new district only
-   re-rendered the palette, so every cell's aria-label — which names the
-   district a click would move it into — stayed stale until the grid
-   re-rendered for an unrelated reason. A screen-reader user would be told
-   the wrong target district. I could have loosened the assertion; instead
-   I fixed the render order
+   re-rendered the palette, so every cell's aria-label, which names the
+   target district, stayed stale until the grid re-rendered for an
+   unrelated reason. A screen-reader user would be told the wrong target.
+   I could have loosened the assertion; instead I fixed the render order
    ([`e1ea83f`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/e1ea83f)).
 
 3. **A manual keyboard pass with `agent-browser` found a second bug the test
@@ -45,26 +44,30 @@ share fixed with your own hands and watch the seat count move anyway.
    every single action. Fixed in the same commit as the aria-label bug
    ([`e1ea83f`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/e1ea83f))
    by re-focusing the equivalent new button after each rebuild. This is the
-   moment that mattered most: it's the kind of bug that never shows up in a
-   mouse-driven click-through and never shows up in a jsdom test either —
-   only an actual keyboard walk through the live page surfaces it.
+   moment that mattered most: a mouse-driven click-through and a jsdom test
+   both miss it; only an actual keyboard walk surfaces it.
 
-4. **Choosing five distinguishable district colors over a "safe" three.**
-   The project's validated categorical palette only guarantees all-pairs
-   colorblind-safety for its first three slots, but the mechanic needs five
-   districts. Rather than force the mechanic down to three districts to fit
-   the palette, I kept color as a secondary, reinforcing channel and made
-   the numeral badge on every cell and the district number on every button
-   the primary identity channel — "never color alone," applied to a case
-   the reference palette itself doesn't fully cover
-   ([`8406302`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/8406302)).
+4. **Wiring the accessibility sensor the starter names but doesn't
+   provide.** CLAUDE.md says outright that nothing in CI measures
+   accessibility, so I ported a prior week's `check:audit` (Lighthouse via
+   `chrome-launcher`)
+   ([`af46269`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/af46269)).
+   First run found two real defects: party-A/B text scored 4.18:1 and
+   3.74:1 against the background, under WCAG AA's 4.5:1 floor, and all 50
+   grid cells failed `label-content-name-mismatch` — their aria-hidden
+   letter and badge counted as a visible label a voice-control user expects
+   in the accessible name. Fixed both at the root rather than loosening the
+   gate: darkened the colors and moved the letter/badge into CSS generated
+   content, which can't mismatch a name it isn't part of
+   ([`acca710`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-yunlin/commit/acca710)).
 
 ## Verification
 
-`pnpm check` (typecheck, build, oxlint, stylelint, 25 vitest tests) is green.
+`pnpm check` (typecheck, build, oxlint, stylelint, 25 vitest tests) and
+`pnpm check:audit` (Lighthouse, 100/100 accessibility) are both green.
 `pnpm dlx linkinator ./dist --silent` against a fresh build found 0 broken
 links. The live interaction — selecting a district, clicking a cell, and
 watching the tally and vote-share recap update — was walked through with
 `agent-browser` at both 1920×1080 and 390×844, including a keyboard-only
 pass (Tab/Enter/Space) confirming focus is retained after every action, with
-zero console errors at either viewport.
+zero console errors — re-checked after moment 4's fixes.

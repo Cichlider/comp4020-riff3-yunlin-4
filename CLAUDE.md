@@ -187,6 +187,28 @@ know whose repo it is. Spend the effort on the work.
   here) should keep color as a secondary/reinforcing channel and put the
   real identity signal in text or a numeral on every mark, rather than
   forcing the design down to the palette's guaranteed-safe count.
+- **CLAUDE.md names an unwired sensor as a standing gap — wiring it (`pnpm
+  check:audit`, ported from a prior week's `scripts/audit.ts`: Lighthouse
+  via `chrome-launcher` against the built `dist/`) found two real defects
+  a green `pnpm check` and a manual keyboard pass had both missed.** (1)
+  `--party-a`/`--party-b` text on the paper background scored 4.18:1 and
+  3.74:1, under WCAG AA's 4.5:1 floor for bold body text — darkening both
+  (same hue) fixed it. (2) every one of the 50 grid cells failed axe's
+  `label-content-name-mismatch`: their party letter and district badge are
+  `aria-hidden` DOM text nodes, and axe still counts `aria-hidden` text as
+  a "visible label" a sighted or voice-control user expects echoed in the
+  accessible name, even though it's excluded from the accessible name
+  itself. Moving that text from DOM nodes to CSS generated content
+  (`content: attr(data-party)`) made the check pass — generated content
+  isn't part of `textContent`, so it can't be flagged as a mismatched
+  label, and it's a more accurate model of what these two marks always
+  were: decorative reinforcement of an aria-label that already says
+  everything, not an independent label of their own. Any widget that
+  duplicates its accessible-name content as `aria-hidden` DOM text for
+  sighted-user reinforcement should render that duplicate via CSS
+  generated content instead, and it's worth running `pnpm check:audit`
+  once a widget has custom ARIA, even when the manual browser pass already
+  came back clean — the two sensors catch different things.
 
 ## This file is yours
 
