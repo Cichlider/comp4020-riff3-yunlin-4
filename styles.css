@@ -3,8 +3,8 @@
   --ink: #0b0b0b;
   --ink-secondary: #52514e;
   --link: #0b5fff;
-  --party-a: #2a78d6;
-  --party-b: #e34948;
+  --party-a: #2466b6;
+  --party-b: #c13e3d;
 }
 
 * {
@@ -155,7 +155,16 @@ h2 {
   outline-offset: 2px;
 }
 
-.district-badge {
+/* The party letter and district badge are pure visual reinforcement of
+   what the cell's aria-label already says in full — rendered as generated
+   content (not DOM text) so they can't be mistaken for an independent,
+   mismatched accessible name. */
+.cell::before {
+  content: attr(data-party);
+}
+
+.cell::after {
+  content: attr(data-district);
   position: absolute;
   bottom: -1px;
   right: -1px;

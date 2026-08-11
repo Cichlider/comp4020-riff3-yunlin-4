@@ -11,7 +11,7 @@ import {
 // Party identity is never color alone: every cell also carries an A/B
 // letter, and every district is also a numeral. Colors reinforce; labels
 // carry the meaning (see dataviz skill's "never color alone" rule).
-const PARTY_COLOR: Record<"A" | "B", string> = { A: "#2a78d6", B: "#e34948" };
+const PARTY_COLOR: Record<"A" | "B", string> = { A: "#2466b6", B: "#c13e3d" };
 const DISTRICT_COLOR = ["#eb6834", "#1baf7a", "#eda100", "#008300", "#4a3aa7"];
 
 let districts: DistrictMap = [...PRESETS.compact.districts];
@@ -70,13 +70,14 @@ function renderGrid(): void {
       const cell = document.createElement("button");
       cell.type = "button";
       cell.className = "cell";
+      cell.dataset.party = party;
+      cell.dataset.district = String(d + 1);
       cell.style.setProperty("--party-color", PARTY_COLOR[party]);
       cell.style.setProperty("--district-color", DISTRICT_COLOR[d]);
       cell.setAttribute(
         "aria-label",
         `Row ${r + 1}, column ${c + 1}: Party ${party} voter, currently district ${d + 1}. Activate to move it into district ${activeDistrict + 1}.`,
       );
-      cell.innerHTML = `<span aria-hidden="true">${party}</span><span class="district-badge" aria-hidden="true">${d + 1}</span>`;
       cell.addEventListener("click", () => {
         districts[i] = activeDistrict;
         renderGrid();
