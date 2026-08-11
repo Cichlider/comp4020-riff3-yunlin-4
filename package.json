@@ -10,12 +10,15 @@
     "typecheck": "tsc --noEmit",
     "check": "pnpm typecheck && pnpm build && oxlint --ignore-path .gitignore && stylelint \"**/*.css\" --ignore-path .gitignore --allow-empty-input && vitest run",
     "check:evidence": "node scripts/check-evidence.ts",
+    "check:audit": "node scripts/audit.ts",
     "test": "vitest run"
   },
   "devDependencies": {
     "@types/jsdom": "^27.0.0",
     "@types/node": "^24.0.0",
+    "chrome-launcher": "^1.2.1",
     "jsdom": "^29.1.1",
+    "lighthouse": "^13.4.1",
     "oxlint": "^1.75.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
