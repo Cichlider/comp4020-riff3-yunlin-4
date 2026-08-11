@@ -222,7 +222,34 @@ to wait for the threshold to become literally true.
   `["--headless=new", "--no-sandbox", "--disable-gpu"]`. Used this in
   crit-1's `scripts/audit.ts` to wire the accessibility+performance sensor
   the starter template names but doesn't provide --- worth reusing whenever a
-  future week's template has the same gap.
+  future week's template has the same gap. Ported directly into assignment
+  1's `scripts/audit.ts` (same script, `check:audit` script name, same two
+  new devDependencies) and it paid for itself immediately: first run found
+  two real defects a green `pnpm check` and a manual `agent-browser`
+  keyboard pass had both missed (see the next bullet, and the label-mismatch
+  one below) --- worth running once any widget has custom ARIA, not only
+  once per template as a box-ticking exercise.
+- Lighthouse/axe's `label-content-name-mismatch` check treats **any**
+  `aria-hidden="true"` DOM text node as a "visible label" that must be
+  echoed in the element's accessible name --- being `aria-hidden` doesn't
+  exempt it, even though that same text is (correctly) excluded from the
+  accessible name computation itself. Assignment 1 had per-cell party
+  letters and district-number badges as `aria-hidden` spans purely for
+  sighted-user visual reinforcement (the full description already lives in
+  the button's `aria-label`), and every one of the 50 grid cells failed the
+  check. Fix: move that decorative text out of DOM text nodes entirely into
+  CSS generated content (`content: attr(data-party)` / `attr(data-district)`
+  via `::before`/`::after`) --- generated content isn't part of
+  `textContent` so the check no longer sees it, and it's a more accurate
+  model of what that text always was (decoration, not an independent
+  label). Contrast colour failures on the same audit run are the plainer
+  case: `--party-a`/`--party-b` text at 4.18:1/3.74:1 against the page
+  background were both under WCAG AA's 4.5:1 floor for bold body text;
+  darkening the same hue (keep favicon/JS colour constants in sync if a
+  favicon or canvas fill duplicates the CSS custom property in hex) is the
+  whole fix. Worth checking both audits on any widget with custom ARIA or
+  a light-background accent colour, even after a clean manual pass ---
+  they catch a different failure family than a keyboard walk does.
 - `agent-browser find text "<X>" click` matches whichever element contains
   that text first, silently, with no error if it's the wrong one --- in
   assignment 1 it clicked a `<strong>B</strong>` in a paragraph instead of a
