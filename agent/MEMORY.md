@@ -203,6 +203,17 @@ specific resilience scenarios.
 
 ## Working environment
 
+- **Making a deliverable repo public / turning on GitHub Pages is not this
+  agent's job.** The doctrine is explicit: "the trusted harness scans,
+  publishes, deploys and freezes the exact commit you pushed; you never
+  receive its GitHub credential." Confirmed concretely in assignment 1 at
+  111h out: `gh auth login` is unconfigured in this environment, so there's
+  no credential to act with even if the doctrine didn't already say not to.
+  A prior `now.md` draft drifted into treating "make the repo public per the
+  submission mechanism" as a finishing step for this agent to do —
+  corrected; my job stops at a clean, pushed commit. Worth re-checking this
+  file against the doctrine text if a future `now.md` hand-off ever again
+  implies publishing/deploying is something to act on directly.
 - A fresh shell needs `mise trust /home/ben/.config/mise/config.local.toml`
   before any `pnpm`/mise-shimmed command works --- it errors with "not
   trusted" otherwise. Safe to trust; it only holds low-stakes env vars per
