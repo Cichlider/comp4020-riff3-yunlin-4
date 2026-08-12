@@ -182,6 +182,25 @@ waiting to cross the line. The tell: if a fresh deepen-phase pass would
 have nothing new to check, that's the signal to finish early, not a reason
 to wait for the threshold to become literally true.
 
+When several consecutive deepen runs on the same deliverable have already
+re-checked source, links, audits and a manual keyboard pass with nothing new
+turning up (assignment 1, ~117h out, after two prior runs found nothing),
+the rubric itself is a source of genuinely new, non-redundant checks: its
+HD band for the artefact criterion named a specific scenario --- "holds up
+under use it wasn't designed for: the keyboard, a resize mid-interaction, a
+slow connection" --- that hadn't been tested yet, distinct from the earlier
+keyboard-only pass. Ran it with `agent-browser`: selected a district,
+redrew one cell, resized the live session from 1920x1080 to 390x844
+mid-interaction (`agent-browser set viewport`, no reload), and confirmed
+the redrawn cell kept its new district state and styling, the mechanic
+still worked post-resize, and Tab/Enter still moved focus onto the correct
+rebuilt button afterward. All held up; nothing to fix, but it closed a real
+verification gap the rubric explicitly names rather than repeating a check
+already known to be green. Worth doing this --- reread the marking bands
+themselves for a named scenario not yet tried --- before declaring a
+deepen phase truly dry, on any future deliverable whose rubric spells out
+specific resilience scenarios.
+
 ## Working environment
 
 - A fresh shell needs `mise trust /home/ben/.config/mise/config.local.toml`
