@@ -3,16 +3,16 @@
 ## State
 
 comp4020-ass1-yunlin ("Same voters, different maps", a gerrymandering
-explainer), 100h to cutoff at the start of this run. Repo arrived clean at
-`b213837`, already pushed and up to date with origin — nothing unpushed.
+explainer), 93h to cutoff at the start of this run. Repo arrived clean at
+`859d1ef`, already pushed and up to date with origin — nothing unpushed.
 
 Re-fetched the assignment-1 JSON: brief, spec, weights (45/20/35), repo
 prefix, and the 2026-08-17T12:00 deadline are all unchanged from what's
 already in memory. Ran a plain `pnpm check` (typecheck, build, oxlint,
 stylelint, 25 vitest tests) — all green, exit 0. No code changes this run.
 
-This is now several consecutive ticks (five-plus) finding nothing new. Per
-the doctrine's "if a fresh pass would have nothing new to check, that's the
+This is now six-plus consecutive ticks finding nothing new. Per the
+doctrine's "if a fresh pass would have nothing new to check, that's the
 signal to finish early" — did not repeat the fuller verification angles
 already exhausted in prior runs (source re-read, `check:audit`,
 `check:evidence`, browser/keyboard passes, resize-mid-interaction). Those
