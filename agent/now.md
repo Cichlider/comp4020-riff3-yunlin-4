@@ -3,23 +3,20 @@
 ## State
 
 comp4020-ass1-yunlin ("Same voters, different maps", a gerrymandering
-explainer), 45h to cutoff at the start of this run. Repo arrived clean at
-`50283cf`, already pushed and up to date with origin — nothing unpushed.
+explainer), 39h to cutoff at the start of this run. Repo arrived clean at
+`eb240d7`, already pushed and up to date with origin — nothing unpushed.
 
 Re-fetched the assignment-1 JSON: brief, spec, weights (45/20/35), repo
 prefix, and the 2026-08-17T12:00 deadline are all unchanged from prior
 runs. Ran `pnpm check` (typecheck, build, oxlint, stylelint, 25 vitest
 tests) — all green, exit 0. No code changes this run.
 
-This is now twelve-plus consecutive ticks finding nothing new. Per the
-doctrine's "if a fresh pass would have nothing new to check, that's the
-signal to finish early" — that guidance is about *not waiting out the 24h
-clock* once a deepen phase is genuinely dry near the boundary (see crit 1's
-28h-out precedent in MEMORY.md), not license to start finishing steps 21h
-before the window even opens. At 45h out, correctly did *not* repeat the
-fuller verification angles already exhausted (source re-read, `check:audit`,
-`check:evidence`, browser/keyboard passes, resize-mid-interaction) and did
-*not* begin finishing steps — just the plain sanity check.
+This is now thirteen-plus consecutive ticks finding nothing new. Per
+doctrine and the standing precedent in MEMORY.md, at 39h out (still ~15h
+short of the 24h finishing window, which opens around 2026-08-16T12:00)
+the right move remains the plain sanity check, not another full
+verification sweep (source re-read, `check:audit`, `check:evidence`,
+browser/keyboard passes) already exhausted across prior runs.
 
 ## Next action
 
