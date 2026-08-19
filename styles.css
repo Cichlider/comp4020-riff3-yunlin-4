@@ -1,10 +1,12 @@
 :root {
-  --paper: #f9f9f7;
+  --paper: #fff;
   --ink: #0b0b0b;
   --ink-secondary: #52514e;
   --link: #0b5fff;
   --party-a: #2466b6;
   --party-b: #c13e3d;
+  --grid-line: #d5d5d2;
+  --badge-ink: #fff;
 }
 
 * {
@@ -21,12 +23,12 @@ body {
 }
 
 main {
-  max-width: 40rem;
+  max-width: 64rem;
   margin: 0 auto;
 }
 
 header {
-  max-width: 40rem;
+  max-width: 64rem;
   margin: 0 auto;
   padding: 1.5rem 0 0.5rem;
 }
@@ -47,7 +49,8 @@ h2 {
 }
 
 .lede {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  max-width: 42rem;
 }
 
 .party-a {
@@ -77,6 +80,7 @@ h2 {
 .grid,
 .presets,
 #tally-table,
+.seat-bar,
 .seats-summary {
   font-family:
     system-ui,
@@ -89,24 +93,43 @@ h2 {
 .presets {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.6rem;
   margin: 1rem 0;
 }
 
 .swatch,
 .preset {
   font: inherit;
-  font-size: 0.85rem;
-  padding: 0.4rem 0.7rem;
-  border: 1px solid rgb(11 11 11 / 10%);
-  border-radius: 999px;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.1rem;
+  border: 2px solid rgb(11 11 11 / 15%);
+  border-radius: 10px;
   background: #fff;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgb(11 11 11 / 10%);
+  transition:
+    background-color 0.1s ease,
+    transform 0.05s ease;
+}
+
+.swatch {
+  border-color: var(--swatch-color);
+  background: color-mix(in srgb, var(--swatch-color) 10%, #fff);
+}
+
+.swatch:hover {
+  background: color-mix(in srgb, var(--swatch-color) 22%, #fff);
+}
+
+.swatch:active {
+  transform: scale(0.97);
 }
 
 .swatch[aria-pressed="true"] {
+  background: var(--swatch-color);
   border-color: var(--ink);
-  border-width: 2px;
+  border-width: 3px;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -114,36 +137,56 @@ h2 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.3rem;
+  height: 1.3rem;
   border-radius: 50%;
   background: var(--swatch-color);
   color: #fff;
-  font-size: 0.7rem;
-  margin-right: 0.3rem;
+  font-size: 0.75rem;
+  margin-right: 0.4rem;
+}
+
+.swatch[aria-pressed="true"] .swatch-chip {
+  background: #fff;
+  color: var(--ink);
 }
 
 .preset {
   border-color: var(--ink);
 }
 
+.preset:hover {
+  background: rgb(11 11 11 / 6%);
+}
+
+/* Cells no longer wrap every voter in its own district-colored border.
+   A thin neutral line separates all cells (so each is still readable as
+   its own clickable box); a bold line only appears on the sides that face
+   a different district, so contiguous districts read as one shape, the
+   way a real election map draws a single boundary rather than outlining
+   every precinct. */
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--cols, 10), 1fr);
-  gap: 3px;
-  max-width: 26rem;
+  gap: 0;
+  width: 100%;
+  max-width: 54rem;
   aspect-ratio: 2 / 1;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
+  touch-action: none;
+  user-select: none;
 }
 
 .cell {
   position: relative;
   padding: 0;
-  border: 3px solid var(--district-color);
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--grid-line);
   background: var(--party-color);
   color: #fff;
   font-weight: bold;
-  font-size: clamp(0.65rem, 2.2vw, 0.95rem);
+  font-size: clamp(0.85rem, 2.6vw, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +195,8 @@ h2 {
 
 .cell:focus-visible {
   outline: 3px solid var(--ink);
-  outline-offset: 2px;
+  outline-offset: -3px;
+  z-index: 1;
 }
 
 /* The party letter and district badge are pure visual reinforcement of
@@ -166,16 +210,57 @@ h2 {
 .cell::after {
   content: attr(data-district);
   position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 1.1em;
-  height: 1.1em;
-  line-height: 1.1em;
+  bottom: 2px;
+  right: 2px;
+  width: 1.3em;
+  height: 1.3em;
+  line-height: 1.3em;
   text-align: center;
   border-radius: 50%;
-  background: #fffdf6;
-  color: var(--ink);
-  font-size: 0.65em;
+  background: var(--district-color);
+  color: var(--badge-ink);
+  font-size: 0.55em;
+}
+
+.presets {
+  margin-top: 1.25rem;
+}
+
+/* A horizontal row of blocks, one per district, colored by whoever won it,
+   the same shape US election coverage uses for a seat count. Decorative:
+   the aria-live seats-summary text carries the same information for
+   screen readers. */
+.seat-bar {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  margin: 1.25rem 0 0.75rem;
+}
+
+.seat {
+  flex: 1;
+  min-width: 0;
+  height: 4.5rem;
+  background: var(--seat-color);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  text-align: center;
+}
+
+.seat-district {
+  font-size: 0.7rem;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.seat-winner {
+  font-size: 1.15rem;
+  font-weight: bold;
 }
 
 #tally-table {
@@ -188,7 +273,7 @@ h2 {
 #tally-table th,
 #tally-table td {
   text-align: left;
-  padding: 0.4rem 0.6rem;
+  padding: 0.5rem 0.7rem;
   border-bottom: 1px solid #e1e0d9;
 }
 
@@ -202,10 +287,19 @@ h2 {
 
 .seats-summary {
   font-weight: bold;
+  font-size: 1.05rem;
 }
 
 @media (width <= 480px) {
   .grid {
     max-width: 100%;
+  }
+
+  .seat {
+    height: 3.5rem;
+  }
+
+  .seat-district {
+    display: none;
   }
 }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Same voters, different maps — a gerrymandering explainer</title>
+    <title>Same voters, different maps, a gerrymandering explainer</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -16,9 +16,9 @@
     <main>
       <h1>Same voters, different maps</h1>
       <p class="lede">
-        Below is a fixed town of 50 voters: 30 for
+        Below is a fixed town of 50 voters, 30 for
         <strong class="party-a">Party A</strong>
-        and 20 for <strong class="party-b">Party B</strong> — 60% and 40% of
+        and 20 for <strong class="party-b">Party B</strong>, 60% and 40% of
         the vote, always. Nobody moves and nobody changes their mind anywhere
         on this page. The only thing you get to change is where the five
         district lines fall. Watch what that alone does to who wins.
@@ -27,9 +27,10 @@
       <section aria-labelledby="map-heading">
         <h2 id="map-heading">The town</h2>
         <p id="grid-instructions">
-          Pick a district below, then click or tap any cell to redraw it into
-          that district. Every cell must belong to one of the five districts;
-          the map only tells you whose bloc of ten is largest in each.
+          Choose a district below, then click or drag across the town to
+          paint cells into it, just like drawing a district on a real
+          election map. Every cell must belong to one of the five districts,
+          the map shows whose bloc of ten is largest in each.
         </p>
 
         <div class="palette" role="group" aria-label="Choose a district to paint">
@@ -53,8 +54,19 @@
       <section aria-labelledby="tally-heading">
         <h2 id="tally-heading">The result</h2>
         <p class="votes-recap" data-testid="votes-recap">
-          Votes never move: <strong class="party-a">A 30 (60%)</strong> ·
+          Votes never move, <strong class="party-a">A 30 (60%)</strong> and
           <strong class="party-b">B 20 (40%)</strong>
+        </p>
+        <div
+          id="seat-bar"
+          class="seat-bar"
+          data-testid="seat-bar"
+          aria-hidden="true"
+        >
+          <!-- Populated by main.ts: five seat blocks, one per district. -->
+        </div>
+        <p class="seats-summary" data-testid="seats-summary" aria-live="polite">
+          <!-- Populated by main.ts: "A wins N seats, B wins N seats" -->
         </p>
         <table id="tally-table" data-testid="tally-table">
           <caption class="sr-only">
@@ -73,9 +85,6 @@
             <!-- Populated by main.ts -->
           </tbody>
         </table>
-        <p class="seats-summary" data-testid="seats-summary" aria-live="polite">
-          <!-- Populated by main.ts: "A wins N seats, B wins N seats" -->
-        </p>
       </section>
 
       <section aria-labelledby="explain-heading">
@@ -84,19 +93,19 @@
           Courts require districts to hold roughly equal population, so all
           three presets above keep exactly ten voters in every district, the
           way a real map has to. The sandbox above won't stop you from
-          painting a lopsided one anyway — watch the "Voters" column drift if
+          painting a lopsided one anyway, watch the "Voters" column drift if
           you do, and notice that an unequal district is its own kind of
           gerrymander. Equal population still leaves the shape almost
           entirely up to whoever draws the map, and that one degree of
           freedom is enough. <strong>Cracking</strong> spreads a
           bloc thin across several districts so it's outvoted in every one.
-          <strong>Packing</strong> does the opposite: it crowds a bloc into a
+          <strong>Packing</strong> does the opposite, it crowds a bloc into a
           small number of districts it wins by a landslide, wasting every vote
-          past the bare majority it needed. Both are visible above: cracking
-          takes B from 40% of the vote to zero seats; packing leaves B with
+          past the bare majority it needed. Both are visible above, cracking
+          takes B from 40% of the vote to zero seats and packing leaves B with
           one safe seat and nothing else, worse than the compact map's
-          roughly proportional 3–2. No voter changed their mind in any of the
-          three — only the lines did.
+          roughly proportional 3-2. No voter changed their mind in any of the
+          three, only the lines did.
         </p>
       </section>
     </main>
